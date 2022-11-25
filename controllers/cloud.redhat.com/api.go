@@ -8,6 +8,35 @@ import (
 	"github.com/RedHatInsights/clowder/controllers/cloud.redhat.com/clowderconfig"
 )
 
+func returnError(msg string) string {
+	return fmt.Sprintf("{\"error\":%s}", msg)
+}
+
+type MetricsMuxSetup struct {
+	path string
+	fn   func() []string
+	err  string
+}
+
+var apiData = []MetricsMuxSetup{{
+	path: "/clowdapps/present/",
+	fn:   GetPresentApps,
+	err:  "could not load present apps for output",
+}, {
+	path: "/clowdapps/managed/",
+	fn:   GetManagedApps,
+	err:  "could not load managed apps for output",
+}, {
+	path: "/clowdenvs/present/",
+	fn:   GetPresentEnvs,
+	err:  "could not load present envs for output",
+}, {
+	path: "/clowdenvs/managed/",
+	fn:   GetManagedEnvs,
+	err:  "could not load managed envs for output",
+},
+}
+
 func CreateAPIServer() *http.Server {
 	mux := http.NewServeMux()
 
@@ -16,40 +45,22 @@ func CreateAPIServer() *http.Server {
 		w.Header().Add(
 			"Content-Type", "application/json",
 		)
-		fmt.Fprintf(w, "%s", jsonString)
+		if _, err := fmt.Fprintf(w, "%s", jsonString); err != nil {
+			fmt.Fprint(w, returnError("could not load config for output"))
+		}
 	})
 
-	mux.HandleFunc("/clowdapps/present/", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add(
-			"Content-Type", "application/json",
-		)
-		jsonString, _ := json.Marshal(GetPresentApps())
-		fmt.Fprintf(w, "%s", jsonString)
-	})
-
-	mux.HandleFunc("/clowdapps/managed/", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add(
-			"Content-Type", "application/json",
-		)
-		jsonString, _ := json.Marshal(GetManagedApps())
-		fmt.Fprintf(w, "%s", jsonString)
-	})
-
-	mux.HandleFunc("/clowdenvs/present/", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add(
-			"Content-Type", "application/json",
-		)
-		jsonString, _ := json.Marshal(GetPresentEnvs())
-		fmt.Fprintf(w, "%s", jsonString)
-	})
-
-	mux.HandleFunc("/clowdenvs/managed/", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add(
-			"Content-Type", "application/json",
-		)
-		jsonString, _ := json.Marshal(GetManagedEnvs())
-		fmt.Fprintf(w, "%s", jsonString)
-	})
+	for _, metricsMuxSetup := range apiData {
+		mux.HandleFunc(metricsMuxSetup.path, func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Add(
+				"Content-Type", "application/json",
+			)
+			jsonString, _ := json.Marshal(metricsMuxSetup.fn())
+			if _, err := fmt.Fprintf(w, "%s", jsonString); err != nil {
+				fmt.Fprint(w, returnError(metricsMuxSetup.err))
+			}
+		})
+	}
 
 	srv := http.Server{
 		Addr:    "127.0.0.1:2019",

@@ -39,7 +39,9 @@ func (ch *servicemeshProvider) Provide(app *crd.ClowdApp) error {
 		}
 		utils.UpdateAnnotations(&deployment.Spec.Template, annotations)
 
-		ch.Cache.Update(deployProvider.CoreDeployment, &deployment)
+		if err := ch.Cache.Update(deployProvider.CoreDeployment, &deployment); err != nil {
+			return err
+		}
 	}
 
 	return nil
