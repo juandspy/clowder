@@ -1,0 +1,10 @@
+ARG BASE_IMAGE=
+FROM $BASE_IMAGE as builder
+
+# COPY /tests tests
+# COPY /build build
+# COPY deploy.yml deploy-mutate.yml manifest2template.py template.yml /ci/minikube_e2e_tests.sh ./
+
+RUN make envtest
+
+CMD [ "./minikube_e2e_tests.sh" ] 

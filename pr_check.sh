@@ -92,6 +92,7 @@ if [[ $UNIT_TEST_RESULT -ne 0 ]]; then
     exit $UNIT_TEST_RESULT
 fi
 
+# ---------------------------------------------------------------------------------------------------------
 CLOWDER_VERSION=`git describe --tags`
 
 IMG=$IMAGE_NAME:$IMAGE_TAG BASE_IMG=$BASE_IMG make docker-build
