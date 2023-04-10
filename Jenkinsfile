@@ -42,12 +42,12 @@ pipeline {
         timestamps()
     }
     environment {
-        CLOWDER_VERSION=sh(script: "git describe --tags", returnStdout: true)
+        CLOWDER_VERSION=sh(script: "git describe --tags", returnStdout: true).trim()
 
         BASE_TAG=sh(script:"cat go.mod go.sum Dockerfile.base | sha256sum  | head -c 8", returnStdout: true)
         BASE_IMG="quay.io/cloudservices/clowder-base:${BASE_TAG}"
 
-        IMAGE_TAG=sh(script:"git rev-parse --short=8 HEAD", returnStdout: true)
+        IMAGE_TAG=sh(script:"git rev-parse --short=8 HEAD", returnStdout: true).trim()
         IMAGE_NAME="quay.io/cloudservices/clowder"
 
         MINIKUBE_SSH_IDENT="echo $MINIKUBE_SSH_KEY > minikube-ssh-ident"
