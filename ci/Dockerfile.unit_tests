@@ -1,0 +1,8 @@
+ARG BASE_IMAGE=
+FROM $BASE_IMAGE as builder
+
+RUN dnf -y install podman
+
+RUN make envtest
+
+RUN ./unit_tests.sh
