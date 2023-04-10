@@ -129,7 +129,7 @@ pipeline {
 
                             docker login -u="$QUAY_USER" -p="$QUAY_TOKEN" quay.io
 
-                            docker build -f ci/Dockerfile.minikube_e2e_tests --build-arg BASE_IMAGE=${BASE_IMG} -t $CONTAINER_NAME .
+                            docker build -f Dockerfile --build-arg BASE_IMAGE=${BASE_IMG} -t $CONTAINER_NAME .
                             
                             docker run -i \
                                 --name $CONTAINER_NAME \
@@ -142,7 +142,8 @@ pipeline {
                                 -e MINIKUBE_ROOTDIR=$MINIKUBE_ROOTDIR \
                                 -e MINIKUBE_USER=$MINIKUBE_USER \
                                 -e CLOWDER_VERSION=$CLOWDER_VERSION \
-                                $BASE_IMG
+                                $BASE_IMG \
+                                make envtest && ./minikube_e2e_tests.sh
                             TEST_RESULT=$?
 
                             mkdir artifacts
