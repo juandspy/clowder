@@ -110,6 +110,7 @@ pipeline {
                                 make test
                             UNIT_TEST_RESULT=$?
 
+                            docker cp $TEST_CONTAINER:/container_workspace/artifacts/ $PWD
                             docker rm -f $TEST_CONTAINER
 
                             if [[ $UNIT_TEST_RESULT -ne 0 ]]; then
