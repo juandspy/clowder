@@ -98,7 +98,6 @@ pipeline {
                             docker build -f ci/Dockerfile.unit_tests --build-arg BASE_IMAGE=${BASE_IMG} -t $TEST_CONTAINER .
 
                             docker run -i \
-                                -v `$PWD/bin/setup-envtest use -p path`:/bins:ro \
                                 -e IMAGE_NAME=${IMAGE_NAME} \
                                 -e IMAGE_TAG=${IMAGE_TAG} \
                                 -e QUAY_USER=$QUAY_USER \
