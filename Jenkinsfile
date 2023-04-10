@@ -143,7 +143,7 @@ pipeline {
                                 -e MINIKUBE_USER=$MINIKUBE_USER \
                                 -e CLOWDER_VERSION=$CLOWDER_VERSION \
                                 $BASE_IMG \
-                                make envtest && ./minikube_e2e_tests.sh
+                                ./minikube_e2e_tests.sh
                             TEST_RESULT=$?
 
                             mkdir artifacts
