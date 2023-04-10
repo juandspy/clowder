@@ -127,7 +127,7 @@ pipeline {
                             sh '''
                             set -exv
 
-                            CONTAINER_NAME="clowder-ci-minikube-e2e-tests-${IMAGE_TAG}"
+                            CONTAINER_NAME="clowder-ci-minikube-e2e-tests-$IMAGE_TAG"
 
                             docker login -u="$QUAY_USER" -p="$QUAY_TOKEN" quay.io
 
@@ -145,7 +145,7 @@ pipeline {
                                 -e MINIKUBE_USER=$MINIKUBE_USER \
                                 -e CLOWDER_VERSION=$CLOWDER_VERSION \
                                 $BASE_IMG \
-                                /workspace/ci/minikube_e2e_tests.sh
+                                ./ci/minikube_e2e_tests.sh
                             TEST_RESULT=$?
 
                             mkdir artifacts
