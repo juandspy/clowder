@@ -50,7 +50,7 @@ pipeline {
         IMAGE_TAG=sh(script:"git rev-parse --short=8 HEAD", returnStdout: true).trim()
         IMAGE_NAME="quay.io/cloudservices/clowder"
 
-        MINIKUBE_SSH_IDENT="echo $MINIKUBE_SSH_KEY > minikube-ssh-ident"
+        MINIKUBE_SSH_IDENT=sh("echo $MINIKUBE_SSH_KEY > minikube-ssh-ident", returnStdout: true).trim()
 
         CICD_URL="https://raw.githubusercontent.com/RedHatInsights/cicd-tools/main"
     }
@@ -137,6 +137,7 @@ pipeline {
                             docker run -i \
                                 --name $CONTAINER_NAME \
                                 -v $PWD:/workspace:ro \
+                                -v `$PWD/bin/setup-envtest use -p path`:/bins:ro \
                                 -e IMAGE_NAME=$IMAGE_NAME \
                                 -e IMAGE_TAG=$IMAGE_TAG \
                                 -e QUAY_USER=$QUAY_USER \
