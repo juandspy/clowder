@@ -50,7 +50,7 @@ pipeline {
         IMAGE_TAG=sh(script:"git rev-parse --short=8 HEAD", returnStdout: true).trim()
         IMAGE_NAME="quay.io/cloudservices/clowder"
 
-        MINIKUBE_SSH_IDENT=sh("echo $MINIKUBE_SSH_KEY > minikube-ssh-ident", returnStdout: true).trim()
+        MINIKUBE_SSH_IDENT=sh(script:"echo $MINIKUBE_SSH_KEY > minikube-ssh-ident", returnStdout: true).trim()
 
         CICD_URL="https://raw.githubusercontent.com/RedHatInsights/cicd-tools/main"
     }
