@@ -37,7 +37,7 @@ def create_junit_dummy_result() {
 }
 
 pipeline {
-    agent { label 'rhel8' }
+    agent { label 'insights' }
     options {
         timestamps()
     }
@@ -93,11 +93,15 @@ pipeline {
                             sh '''
                             TEST_CONTAINER="clowder-ci-unit-tests-${IMAGE_TAG}"
 
+                            make envtest
+                            make update-version
+
                             docker login -u="$QUAY_USER" -p="$QUAY_TOKEN" quay.io
                             
                             docker build -f ci/Dockerfile.unit_tests --build-arg BASE_IMAGE=${BASE_IMG} -t $TEST_CONTAINER .
 
                             docker run -i \
+                                -v `$PWD/bin/setup-envtest use -p path`:/bins:ro \
                                 -e IMAGE_NAME=${IMAGE_NAME} \
                                 -e IMAGE_TAG=${IMAGE_TAG} \
                                 -e QUAY_USER=$QUAY_USER \
