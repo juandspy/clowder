@@ -9,6 +9,7 @@ def secrets = [
         [envVar: 'RH_REGISTRY_USER', vaultKey: 'user'],
         [envVar: 'RH_REGISTRY_TOKEN', vaultKey: 'token']]],
     [path: params.VAULT_PATH_MINIKUBE, engineVersion: 1, secretValues: [
+        [envVar: 'MINIKUBE_SSH_KEY', vaultKey: 'private-key'],
         [envVar: 'MINIKUBE_HOST', vaultKey: 'hostname'],
         [envVar: 'MINIKUBE_USER', vaultKey: 'user'],
         [envVar: 'MINIKUBE_ROOTDIR', vaultKey: 'rootdir']]]
