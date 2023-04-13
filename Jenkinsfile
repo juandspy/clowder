@@ -142,7 +142,7 @@ pipeline {
                         withVault([configuration: configuration, vaultSecrets: secrets]) {
                             sh '''
                             set -exv
-                            echo $MINIKUBE_SSH_KEY > minikube-ssh-ident
+                            echo "$MINIKUBE_SSH_KEY" > minikube-ssh-ident
 
                             CONTAINER_NAME="clowder-ci-minikube-e2e-tests-$IMAGE_TAG"
 
