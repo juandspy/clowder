@@ -37,7 +37,7 @@ set +e
 # TEST_RESULT=$?
 
 #./workspace/build/pr_check_inner.sh
-./build/pr_check_inner.sh
+bash -x build/pr_check_inner.sh
 
 TEST_RESULT=$?
 
