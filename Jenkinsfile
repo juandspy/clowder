@@ -78,7 +78,7 @@ pipeline {
             steps {
                 withVault([configuration: configuration, vaultSecrets: secrets]) {
                     sh '''
-                        echo $MINIKUBE_SSH_KEY > minikube-ssh-ident
+                        echo "$MINIKUBE_SSH_KEY" > minikube-ssh-ident
                         
                         ls -l minikube-ssh-ident
 
