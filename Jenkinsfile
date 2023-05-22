@@ -55,22 +55,6 @@ pipeline {
     }
 
     stages {
-        stage('Test stage') {
-            steps {
-                withVault([configuration: configuration, vaultSecrets: secrets]) {
-                    sh '''
-                        echo "$MINIKUBE_SSH_KEY" > minikube-ssh-ident
-                        
-                        ls -l minikube-ssh-ident
-
-                        chmod 600 minikube-ssh-ident
-
-                        ssh -o StrictHostKeyChecking=no $MINIKUBE_USER@$MINIKUBE_HOST -i minikube-ssh-ident "ls"
-                    '''
-                }
-            }
-        }
-
         stage('Build and Push Base Image') {
             steps {
                 withVault([configuration: configuration, vaultSecrets: secrets]) {
