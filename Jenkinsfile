@@ -55,25 +55,6 @@ pipeline {
     }
 
     stages {
-        // stage('Check For Changes') {
-        //     steps {
-        //         script {
-        //             def hasChange = changes_excluding_docs()
-
-        //             sh '''
-        //             if [ ! ${hasChange} ]; then
-        //                 echo "No code changes detected, exiting"
-        //                 ${create_junit_dummy_result()}
-        //                 exit 0
-        //             fi
-        //             '''
-                    
-
-
-        //         }
-        //     }
-        // }
-    
         stage('Test stage') {
             steps {
                 withVault([configuration: configuration, vaultSecrets: secrets]) {
