@@ -131,8 +131,6 @@ pipeline {
                                 ./ci/minikube_e2e_tests.sh
                             TEST_RESULT=$?
 
-                            mkdir artifacts
-
                             docker rm -f $CONTAINER_NAME
                             set -e
 
