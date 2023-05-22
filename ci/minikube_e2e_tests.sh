@@ -11,10 +11,10 @@ CLOWDER_VERSION=`git describe --tags`
 # IMG=$IMAGE_NAME:$IMAGE_TAG BASE_IMG=$BASE_IMG make docker-build
 # IMG=$IMAGE_NAME:$IMAGE_TAG make docker-push
 
-# docker rm clowdercopy || true
-# docker create --name clowdercopy $IMAGE_NAME:$IMAGE_TAG
-# docker cp clowdercopy:/manifest.yaml .
-# docker rm clowdercopy || true
+docker rm clowdercopy || true
+docker create --name clowdercopy $IMAGE_NAME:$IMAGE_TAG
+docker cp clowdercopy:/manifest.yaml .
+docker rm clowdercopy || true
 
 # CONTAINER_NAME="clowder-pr-check-pipeline-$ghprbPullId"
 # docker rm -f $CONTAINER_NAME || true
@@ -161,7 +161,6 @@ set -e
 
 TEST_RESULT=$?
 
-mkdir artifacts
 
 # docker cp $CONTAINER_NAME:/container_workspace/artifacts/ $PWD
 
